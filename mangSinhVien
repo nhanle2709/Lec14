@@ -1,0 +1,195 @@
+
+package test;
+import Mang.sinhVien;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class mangSinhVien{
+	private ArrayList<SV> a = new ArrayList<SV>();
+        public void DocFile(String tenFile) {
+        try {
+            File f = new File(tenFile);
+            if (f.exists()) {
+                Scanner read = new Scanner(f);
+                while(read.hasNext()){
+                    Scanner line = new Scanner(read.nextLine());
+                    SV x ;
+                    String ma, ht="", qq="";
+                    int ns;
+                    boolean gt;
+                    double m1,m2,m3;
+                    ma = line.next();
+                    while (!line.hasNextBoolean())
+                        ht = ht + line.next()+" ";
+                        ht=ht.trim();
+                        gt = line.nextBoolean();
+                        ns=line.nextInt();
+                        m1=line.nextDouble();
+                        m2=line.nextDouble();
+                        if(line.hasNext()){
+                            m3=line.nextDouble();
+                            a.add(new SVCNTT(ma,ht,ns,gt,m1,m2,m3));
+                        }else a.add(new SvKinhTe(ma,ht,ns,gt,m1,m2));
+                }
+            }else System.out.println("file khong ton tai");
+        }catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+        public void danhSachNganhCNTT(){
+            for(SV x :a)
+                if(x instanceof SVCNTT)
+                     System.out.println(x);
+                System.out.println("");
+        }
+	public ArrayList getDanhSachCNTT(){
+            ArrayList<SVCNTT> b = new ArrayList<SVCNTT>();
+            for (SV x : a)
+                if(x instanceof SVCNTT)
+                    b.add((SVCNTT)x);
+            return b;
+        }
+        public void danhSachNhanhKinhTe(){
+            for(SV x :a)
+                if(x instanceof SvKinhTe)
+                     System.out.println(x);
+                System.out.println("");
+        }
+	public ArrayList getDanhSachKinhTe(){
+            ArrayList<SvKinhTe> c = new ArrayList<SvKinhTe>();
+            for (SV x : a)
+                if(x instanceof SvKinhTe)
+                    c.add((SvKinhTe)x);
+            return c;
+        }
+        
+        public void xuatDS(String noiDung){
+        System.out.println(noiDung);
+        for(SV x :a){
+            System.out.println(x);
+        }
+       }
+      public double diemTrungBinhChung(){
+        double s =0;
+        for(SV x :a)
+            if(x instanceof SVCNTT) s=s +((SVCNTT)x).getDiemTB();
+            else s=s +((SvKinhTe)x).getDiemTB();
+        
+            return s/a.size();
+      }     
+      public double getDiemTBC_CNTT(){
+        double s =0 , d=0;
+        for(SV x :a)
+            if(x instanceof SVCNTT){ 
+                s=s +((SVCNTT)x).getDiemTB();
+                d++;
+            }
+        if(d==0) return 0;    
+        else return s/d;
+      }    
+      public double getDiemTBC_KinhTe(){
+        double s =0 , d=0;
+        for(SV x :a)
+            if(x instanceof SvKinhTe){ 
+                s=s +((SvKinhTe)x).getDiemTB();
+                d++;
+            }
+        if(d==0) return 0;    
+        else return s/d;
+      }    
+      public SV MaxTBC(){
+        SV x = a.get(0);
+        for(int i=1;i<a.size();i++)
+             if(x.getDiemTB()<a.get(i).getDiemTB())
+                 x=a.get(i);
+        return x;
+}
+      public SV MaxCNTT(){
+    	SV x = a.get(0);
+            for (int j=0; j<a.size();j++)
+    		for (int i=0; i<a.size();i++) {	
+        		if(a.get(i) instanceof SVCNTT)
+                            if(x.getDiemTB()<a.get(i).getDiemTB())
+                 x=a.get(i);}
+                return x;
+    }
+    public SV MaxKinhTe(){
+    	SV x = a.get(0);
+            for (int j=0; j<a.size();j++)
+    		for (int i=0; i<a.size();i++) {	
+        		if(a.get(i) instanceof SvKinhTe)
+                            if(x.getDiemTB()<a.get(i).getDiemTB())
+                 x=a.get(i);}
+                return x;
+    }
+      public void xacDinhViThu(){
+        for(int i=0;i<a.size();i++){
+            int vt=1;
+            for(int j=0;j<a.size();j++)
+                if(i!=j)
+                    if(a.get(j).getDiemTB()>a.get(i).getDiemTB())
+                        vt++;
+            System.out.println(a.get(i)+"vi thu "+vt);
+        }
+    }
+      public void sapXep(){
+        for(int i=0;i<a.size()-1;i++){
+            for(int j=i+1;j<a.size();j++){
+                if(a.get(i).getDiemTB()<a.get(j).getDiemTB()){
+                    SV t = a.get(i);
+                    a.set(i, a.get(j));
+                    a.set(j, t);
+                }
+            }
+        }
+    }
+      public void loaiSVTBnho(){
+    	double x = getDiemTBC_CNTT();
+        double y = getDiemTBC_KinhTe();
+        for (int j=0; j<a.size();j++)
+    		for (int i=0; i<a.size();i++) {	
+        		if(a.get(i) instanceof SVCNTT && a.get(i).getDiemTB()<x) a.remove(i);
+        		else if(a.get(i) instanceof SvKinhTe &&a.get(i).getDiemTB()<y) a.remove(i);
+        }
+    	xuatDS("DS sau khi xoa sv");
+      }
+    public void output(){
+          xuatDS("Danh Sach Sinh Vien Vua Nhap");
+          System.out.println("Danh sach sinh vien CNTT:");
+          ArrayList<SVCNTT> b = getDanhSachCNTT();
+          for(SVCNTT x : b)
+               System.out.println(x);
+          System.out.println("Danh sach sinh vien Kinh Te:");
+          ArrayList<SvKinhTe> c = getDanhSachKinhTe();
+          for(SvKinhTe x : c)
+               System.out.println(x);
+          System.out.println("............................");
+          System.out.println("Diem trung binh chung: "+diemTrungBinhChung());
+          System.out.println("............................");
+          getDiemTBC_CNTT();
+          System.out.println("Diem trung binh chung nganh CNTT: "+getDiemTBC_CNTT());
+          System.out.println("............................");
+          getDiemTBC_KinhTe();
+          System.out.println("Diem trung binh chung nganh KinhTe: "+getDiemTBC_KinhTe());
+          System.out.println("............................");
+          System.out.println("Hoc sinh co diem TB max la:"+MaxTBC());
+          System.out.println("............................");
+          System.out.println("Hoc sinh CNTT co diem TB max la:"+MaxCNTT());
+          System.out.println("............................");
+          System.out.println("Hoc sinh CNTT co diem TB max la:"+MaxKinhTe());
+          System.out.println("............................");
+          xacDinhViThu();
+          sapXep();
+          xuatDS("Danh Sach Sau Khi Sap Xep ");
+          System.out.println("............................");
+          loaiSVTBnho();
+    }
+	public static void main(String[] args) {
+		mangSinhVien a = new mangSinhVien();
+		a.DocFile("D:\\CNTT_KT.txt");
+		a.output();
+        }
+}
+
