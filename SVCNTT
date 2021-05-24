@@ -1,0 +1,52 @@
+
+package test;
+
+public class SVCNTT extends SV{
+    private double java ,css,html;
+    public SVCNTT(){
+        super();
+        java =css=html = 0;
+    }
+public SVCNTT( String maSV, String hoTen, int namSinh, boolean gioiTinh,double java, double css, double html) {
+        super(maSV, hoTen, namSinh, gioiTinh);
+        this.java = java;
+        this.css = css;
+        this.html = html;
+    }
+
+    public double getJava() {
+        return java;
+    }
+
+    public double getCss() {
+        return css;
+    }
+
+    public double getHtml() {
+        return html;
+    }
+
+    public void setJava(double java) {
+        this.java = java;
+    }
+
+    public void setCss(double css) {
+        this.css = css;
+    }
+
+    public void setHtml(double html) {
+        this.html = html;
+    }
+    @Override
+    public double getDiemTB(){
+        return (java*2 + css + html)/4;
+    }
+   
+    public String toString(){
+        return super.toString()+" "+ getDiemTB()+" "+getHocLuc();
+    }
+    public static void main(String []agrs){
+        SVCNTT a = new SVCNTT("001","Nguyen Van A",2000,true,8,9,7);
+        System.out.print(a);
+    }
+}
