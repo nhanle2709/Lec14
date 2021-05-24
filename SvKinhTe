@@ -1,0 +1,43 @@
+
+package test;
+public class SvKinhTe extends SV{
+    private double nlkt, mkt;
+    public SvKinhTe(){
+        super();
+        nlkt =mkt = 0;
+    }
+
+    public SvKinhTe( String maSV, String hoTen, int namSinh, boolean gioiTinh,double nlkt, double mkt) {
+        super(maSV, hoTen, namSinh, gioiTinh);
+        this.nlkt = nlkt;
+        this.mkt = mkt;
+    }
+
+    public double getNlkt() {
+        return nlkt;
+    }
+
+    public void setNlkt(double nlkt) {
+        this.nlkt = nlkt;
+    }
+
+    public double getMkt() {
+        return mkt;
+    }
+
+    public void setMkt(double mkt) {
+        this.mkt = mkt;
+    }
+     public double getDiemTB(){
+        return (nlkt*2 + mkt)/3;
+    }
+    
+    
+    public String toString(){
+        return super.toString()+" "+ getDiemTB()+" "+getHocLuc();
+    }
+    public static void main(String []agrs){
+        SvKinhTe a = new SvKinhTe("001","Nguyen Van A",2000,true,9,10);
+        System.out.print(a);
+    }
+}
